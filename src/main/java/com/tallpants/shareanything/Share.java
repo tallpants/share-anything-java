@@ -16,24 +16,23 @@ public class Share {
 
     String fileExtension = split[split.length - 1];
 
-    if (fileExtension.equals("shareanythingsnippet")) {
-      // gist raw
-      return null;
-    }
+    try {
+      if (fileExtension.equals("shareanythingsnippet")) {
+        return Hosts.gistRaw(file);
+      }
 
-    double sizeMB = Math.ceil(file.length() / 1000000);
+      double sizeMB = Math.ceil(file.length() / 1000000);
 
-    if (sizeMB <= 10 && Extensions.imgur.contains(fileExtension)) {
-      return Hosts.imgur(file);
-    } else if (sizeMB <= 1 && Extensions.gist.contains(fileExtension)) {
-      try {
-        return Hosts.gist(file);
-      } catch(IOException e) {
-        System.out.println(e.toString());
+      if (sizeMB <= 10 && Extensions.imgur.contains(fileExtension)) {
+        return Hosts.imgur(file);
+      } else if (sizeMB <= 1 && Extensions.gist.contains(fileExtension)) {
+          return Hosts.gist(file);
+      } else {
+        // anonfile
         return null;
       }
-    } else {
-      // anonfile
+    } catch (IOException e) {
+      System.out.println(e.toString());
       return null;
     }
   }

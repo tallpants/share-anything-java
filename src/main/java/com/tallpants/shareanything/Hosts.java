@@ -44,7 +44,7 @@ public class Hosts {
      */
     JSONObject body = new JSONObject();
       JSONObject files = new JSONObject();
-       JSONObject fileName = new JSONObject();
+        JSONObject fileName = new JSONObject();
 
         fileName.put("content", fileContents);
       files.put(file.getName(), fileName);
@@ -61,6 +61,43 @@ public class Hosts {
 
     try {
       return new URL(obj.getString("html_url"));
+    } catch (MalformedURLException e) {
+      return null;
+    }
+  }
+
+  public static URL gistRaw(File file) throws UnirestException, IOException {
+    String fileContents = FileUtils.readFileToString(file, "UTF-8");
+
+    /*
+    {
+      "public": true,
+      "files": {
+        "fileName": {
+          "content": "File content"
+        }
+      }
+    }
+     */
+    JSONObject body = new JSONObject();
+      JSONObject files = new JSONObject();
+        JSONObject fileName = new JSONObject();
+
+        fileName.put("content", fileContents);
+      files.put(file.getName(), fileName);
+    body.put("files", files);
+    body.put("public", "true");
+
+    HttpResponse<JsonNode> response = Unirest.post("https://api.github.com/gists")
+      .header("user-agent", "tallpants")
+      .header("content-type", "application/json")
+      .body(body.toString())
+      .asJson();
+
+    JSONObject obj = response.getBody().getObject();
+
+    try {
+      return new URL(obj.getJSONObject("files").getJSONObject(file.getName()).getString("raw_url"));
     } catch (MalformedURLException e) {
       return null;
     }
