@@ -1,10 +1,15 @@
-apply plugin: 'java-library'
+//apply plugin: 'java-library'
+apply plugin: 'java'
+apply plugin: 'application'
 
 repositories {
     jcenter()
 }
 
 dependencies {
-    api 'com.mashape.unirest:unirest-java:1.4.9'
+//    api 'com.mashape.unirest:unirest-java:1.4.9'
+    compile 'com.mashape.unirest:unirest-java:1.4.9'
 }
+
+mainClassName = 'App'
 
