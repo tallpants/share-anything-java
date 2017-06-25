@@ -3,6 +3,7 @@ package com.tallpants.shareanything;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 public class Share {
@@ -25,8 +26,12 @@ public class Share {
     if (sizeMB <= 10 && Extensions.imgur.contains(fileExtension)) {
       return Hosts.imgur(file);
     } else if (sizeMB <= 1 && Extensions.gist.contains(fileExtension)) {
-      // gist
-      return null;
+      try {
+        return Hosts.gist(file);
+      } catch(IOException e) {
+        System.out.println(e.toString());
+        return null;
+      }
     } else {
       // anonfile
       return null;
