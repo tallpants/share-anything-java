@@ -10,8 +10,7 @@ public class Share {
   public static URL share(File file) throws UnirestException {
     String split[] = file.getName().split("\\.");
     if (split.length < 2) {
-      // anonfile
-      return null;
+      return Hosts.anonfile(file);
     }
 
     String fileExtension = split[split.length - 1];
@@ -28,8 +27,7 @@ public class Share {
       } else if (sizeMB <= 1 && Extensions.gist.contains(fileExtension)) {
           return Hosts.gist(file);
       } else {
-        // anonfile
-        return null;
+        return Hosts.anonfile(file);
       }
     } catch (IOException e) {
       System.out.println(e.toString());

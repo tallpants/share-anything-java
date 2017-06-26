@@ -102,4 +102,23 @@ public class Hosts {
       return null;
     }
   }
+
+  public static URL anonfile(File file) throws UnirestException {
+    HttpResponse<JsonNode> response = Unirest.post("https://anonfile.com/api/upload")
+      .field("file", file)
+      .asJson();
+
+    JSONObject obj = response.getBody().getObject();
+    String url = obj
+      .getJSONObject("data")
+      .getJSONObject("file")
+      .getJSONObject("url")
+      .getString("short");
+
+    try {
+      return new URL(url);
+    } catch (MalformedURLException e) {
+      return null;
+    }
+  }
 }
