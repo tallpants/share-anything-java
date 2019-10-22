@@ -104,7 +104,7 @@ public class Hosts {
   }
 
   public static URL anonfile(File file) throws UnirestException {
-    HttpResponse<JsonNode> response = Unirest.post("https://anonfile.com/api/upload")
+    HttpResponse<JsonNode> response = Unirest.post("https://api.anonfile.com/upload")
       .field("file", file)
       .asJson();
 
